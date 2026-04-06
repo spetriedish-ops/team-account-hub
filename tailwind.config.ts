@@ -47,6 +47,14 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        hub: {
+          surface: "hsl(var(--hub-surface))",
+          "surface-hover": "hsl(var(--hub-surface-hover))",
+          glow: "hsl(var(--hub-glow))",
+          success: "hsl(var(--hub-success))",
+          warning: "hsl(var(--hub-warning))",
+          info: "hsl(var(--hub-info))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

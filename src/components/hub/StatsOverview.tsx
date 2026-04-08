@@ -13,16 +13,16 @@ const StatsOverview = () => (
     {stats.map((s, i) => (
       <motion.div
         key={s.label}
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 + i * 0.08, duration: 0.4 }}
-        className="glass-card p-5 space-y-3"
+        transition={{ delay: 0.1 + i * 0.06, duration: 0.3 }}
+        className="atlassian-card p-4 space-y-2"
       >
         <div className="flex items-center justify-between">
           <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{s.label}</span>
-          <s.icon className={`w-4.5 h-4.5 ${s.color}`} />
+          <s.icon className={`w-4 h-4 ${s.color}`} />
         </div>
-        <p className="text-2xl font-bold font-['Space_Grotesk'] text-foreground">{s.value}</p>
+        <p className="text-2xl font-semibold text-foreground">{s.value}</p>
         <p className="text-xs text-muted-foreground">{s.change}</p>
       </motion.div>
     ))}

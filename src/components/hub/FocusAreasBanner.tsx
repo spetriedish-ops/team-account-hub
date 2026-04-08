@@ -31,17 +31,17 @@ const FocusAreasBanner = () => {
   };
 
   return (
-    <div className="glass-card overflow-hidden">
+    <div className="atlassian-card overflow-hidden">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between px-5 py-3.5 surface-hover"
+        className="w-full flex items-center justify-between px-4 py-3 hover:bg-accent transition-colors"
       >
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
           <Target className="w-4 h-4 text-primary" />
-          <h2 className="text-sm font-semibold font-['Space_Grotesk'] text-foreground">
-            Key Focus Areas
-          </h2>
-          <span className="text-xs text-muted-foreground">({items.length})</span>
+          <h2 className="text-sm font-semibold text-foreground">Key Focus Areas</h2>
+          <span className="ml-1 inline-flex items-center justify-center px-1.5 py-0.5 text-[11px] font-semibold rounded bg-muted text-muted-foreground">
+            {items.length}
+          </span>
         </div>
         {isOpen ? (
           <ChevronUp className="w-4 h-4 text-muted-foreground" />
@@ -59,16 +59,16 @@ const FocusAreasBanner = () => {
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="px-5 pb-4 pt-1 flex flex-wrap gap-2.5">
+            <div className="px-4 pb-4 pt-1 flex flex-wrap gap-2">
               {items.map((item) => (
                 <div
                   key={item.id}
-                  className="group flex items-center gap-2 px-3.5 py-2 rounded-lg bg-secondary border border-border/50 text-sm text-foreground"
+                  className="group flex items-center gap-2 px-3 py-1.5 rounded bg-primary/10 text-sm font-medium text-primary border border-primary/20"
                 >
                   <span>{item.label}</span>
                   <button
                     onClick={() => removeItem(item.id)}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity text-primary/60 hover:text-destructive"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -86,11 +86,11 @@ const FocusAreasBanner = () => {
                       if (e.key === "Escape") setIsAdding(false);
                     }}
                     placeholder="Focus area name…"
-                    className="px-3 py-1.5 rounded-lg bg-secondary border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary w-48"
+                    className="px-3 py-1.5 rounded border border-input text-sm text-foreground bg-card placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring w-48"
                   />
                   <button
                     onClick={addItem}
-                    className="text-xs text-primary font-medium hover:underline"
+                    className="px-3 py-1.5 text-xs font-medium text-primary-foreground bg-primary rounded hover:bg-primary/90 transition-colors"
                   >
                     Add
                   </button>
@@ -98,10 +98,10 @@ const FocusAreasBanner = () => {
               ) : (
                 <button
                   onClick={() => setIsAdding(true)}
-                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-dashed border-border/70 text-sm text-muted-foreground hover:text-foreground hover:border-border transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded border border-dashed border-border text-sm text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors"
                 >
                   <Plus className="w-3.5 h-3.5" />
-                  Add Focus Area
+                  Add
                 </button>
               )}
             </div>

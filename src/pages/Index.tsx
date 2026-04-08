@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Bell, Search, Settings } from "lucide-react";
+import { Bell, Search, Settings, HelpCircle } from "lucide-react";
 import FocusAreasBanner from "@/components/hub/FocusAreasBanner";
 import StatsOverview from "@/components/hub/StatsOverview";
 import ActivityFeed from "@/components/hub/ActivityFeed";
@@ -10,27 +10,30 @@ import BottomLinks from "@/components/hub/BottomLinks";
 
 const Index = () => (
   <div className="min-h-screen bg-background">
-    {/* Header */}
-    <header className="border-b border-border/50 backdrop-blur-xl bg-background/80 sticky top-0 z-50">
-      <div className="container max-w-7xl mx-auto flex items-center justify-between h-16 px-6">
+    {/* Header — Atlassian-style top nav */}
+    <header className="bg-primary sticky top-0 z-50">
+      <div className="container max-w-7xl mx-auto flex items-center justify-between h-12 px-6">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-sm font-['Space_Grotesk']">A</span>
+          <div className="w-7 h-7 rounded bg-primary-foreground/20 flex items-center justify-center">
+            <span className="text-primary-foreground font-bold text-xs">A</span>
           </div>
-          <h1 className="text-lg font-bold font-['Space_Grotesk'] text-foreground">AccountTeamHub</h1>
+          <h1 className="text-sm font-semibold text-primary-foreground">AccountTeamHub</h1>
         </div>
-        <div className="flex items-center gap-2">
-          <button className="p-2 rounded-lg surface-hover text-muted-foreground hover:text-foreground transition-colors">
-            <Search className="w-4.5 h-4.5" />
+        <div className="flex items-center gap-1">
+          <button className="p-2 rounded surface-hover text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10 transition-colors">
+            <Search className="w-4 h-4" />
           </button>
-          <button className="relative p-2 rounded-lg surface-hover text-muted-foreground hover:text-foreground transition-colors">
-            <Bell className="w-4.5 h-4.5" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary" />
+          <button className="relative p-2 rounded text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10 transition-colors">
+            <Bell className="w-4 h-4" />
+            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-destructive" />
           </button>
-          <button className="p-2 rounded-lg surface-hover text-muted-foreground hover:text-foreground transition-colors">
-            <Settings className="w-4.5 h-4.5" />
+          <button className="p-2 rounded text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10 transition-colors">
+            <HelpCircle className="w-4 h-4" />
           </button>
-          <div className="ml-2 w-8 h-8 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-xs font-semibold text-primary">
+          <button className="p-2 rounded text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10 transition-colors">
+            <Settings className="w-4 h-4" />
+          </button>
+          <div className="ml-2 w-7 h-7 rounded-full bg-hub-success flex items-center justify-center text-[11px] font-semibold text-primary-foreground">
             YO
           </div>
         </div>
@@ -38,38 +41,29 @@ const Index = () => (
     </header>
 
     {/* Main Content */}
-    <main className="container max-w-7xl mx-auto px-6 py-8 space-y-6">
+    <main className="container max-w-7xl mx-auto px-6 py-6 space-y-6">
       {/* Welcome */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+        transition={{ duration: 0.3 }}
       >
-        <h2 className="text-3xl font-bold font-['Space_Grotesk'] text-foreground">
+        <h2 className="text-2xl font-semibold text-foreground">
           Good morning, <span className="gradient-text">Team</span> 👋
         </h2>
-        <p className="text-muted-foreground mt-1">Here's what's happening across your account today.</p>
+        <p className="text-muted-foreground text-sm mt-1">Here's what's happening across your account today.</p>
       </motion.div>
 
-      {/* Focus Areas Banner */}
       <FocusAreasBanner />
-
-      {/* Stats Tiles */}
       <StatsOverview />
 
-      {/* Activity + Gray Area Queue */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <ActivityFeed />
         <GrayAreaQueue />
       </div>
 
-      {/* Pinned Slack Messages */}
       <PinnedSlackMessages />
-
-      {/* Account Team */}
       <AccountTeam />
-
-      {/* Bottom Links */}
       <BottomLinks />
     </main>
   </div>

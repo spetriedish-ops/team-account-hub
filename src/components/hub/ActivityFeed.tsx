@@ -11,25 +11,25 @@ const activities = [
 
 const ActivityFeed = () => (
   <motion.div
-    initial={{ opacity: 0, y: 20 }}
+    initial={{ opacity: 0, y: 15 }}
     animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: 0.35, duration: 0.4 }}
-    className="glass-card p-6"
+    transition={{ delay: 0.25, duration: 0.3 }}
+    className="atlassian-card p-5"
   >
-    <div className="flex items-center justify-between mb-5">
-      <h2 className="text-lg font-semibold font-['Space_Grotesk'] text-foreground">Recent Activity</h2>
-      <span className="text-xs text-primary font-medium cursor-pointer hover:underline">See all</span>
+    <div className="flex items-center justify-between mb-4">
+      <h2 className="text-sm font-semibold text-foreground">Recent Activity</h2>
+      <button className="text-xs text-primary font-medium hover:underline">See all</button>
     </div>
-    <div className="space-y-4">
+    <div className="space-y-3">
       {activities.map((a, i) => (
         <motion.div
           key={i}
-          initial={{ opacity: 0, x: 10 }}
+          initial={{ opacity: 0, x: 8 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.45 + i * 0.06 }}
+          transition={{ delay: 0.35 + i * 0.05 }}
           className="flex items-start gap-3"
         >
-          <div className={`mt-0.5 p-1.5 rounded-lg bg-secondary ${a.color}`}>
+          <div className={`mt-0.5 p-1.5 rounded ${a.color} bg-muted`}>
             <a.icon className="w-3.5 h-3.5" />
           </div>
           <div className="flex-1 min-w-0">

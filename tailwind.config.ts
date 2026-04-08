@@ -48,9 +48,6 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         hub: {
-          surface: "hsl(var(--hub-surface))",
-          "surface-hover": "hsl(var(--hub-surface-hover))",
-          glow: "hsl(var(--hub-glow))",
           success: "hsl(var(--hub-success))",
           warning: "hsl(var(--hub-warning))",
           info: "hsl(var(--hub-info))",
@@ -73,20 +70,12 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
       animation: {

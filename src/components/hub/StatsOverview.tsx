@@ -1,11 +1,8 @@
 import { motion } from "framer-motion";
-import { Users, MessageSquare, CheckCircle2, TrendingUp } from "lucide-react";
+import { Users } from "lucide-react";
 
 const stats = [
   { label: "Team Members", value: "12", icon: Users, change: "+2 this month", color: "text-primary" },
-  { label: "Active Threads", value: "24", icon: MessageSquare, change: "8 unread", color: "text-hub-info" },
-  { label: "Tasks Completed", value: "89", icon: CheckCircle2, change: "92% on time", color: "text-hub-success" },
-  { label: "Team Velocity", value: "4.2x", icon: TrendingUp, change: "+18% vs last sprint", color: "text-hub-warning" },
 ];
 
 const StatsOverview = () => (

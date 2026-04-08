@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
 import { Bell, Search, Settings } from "lucide-react";
+import FocusAreasBanner from "@/components/hub/FocusAreasBanner";
 import StatsOverview from "@/components/hub/StatsOverview";
-import TeamMembers from "@/components/hub/TeamMembers";
 import ActivityFeed from "@/components/hub/ActivityFeed";
-import QuickActions from "@/components/hub/QuickActions";
+import GrayAreaQueue from "@/components/hub/GrayAreaQueue";
+import PinnedSlackMessages from "@/components/hub/PinnedSlackMessages";
+import AccountTeam from "@/components/hub/AccountTeam";
+import BottomLinks from "@/components/hub/BottomLinks";
 
 const Index = () => (
   <div className="min-h-screen bg-background">
@@ -35,7 +38,7 @@ const Index = () => (
     </header>
 
     {/* Main Content */}
-    <main className="container max-w-7xl mx-auto px-6 py-8 space-y-8">
+    <main className="container max-w-7xl mx-auto px-6 py-8 space-y-6">
       {/* Welcome */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
@@ -48,15 +51,26 @@ const Index = () => (
         <p className="text-muted-foreground mt-1">Here's what's happening across your account today.</p>
       </motion.div>
 
-      {/* Stats */}
+      {/* Focus Areas Banner */}
+      <FocusAreasBanner />
+
+      {/* Stats Tiles */}
       <StatsOverview />
 
-      {/* Grid: Members + Activity + Actions */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <TeamMembers />
+      {/* Activity + Gray Area Queue */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <ActivityFeed />
-        <QuickActions />
+        <GrayAreaQueue />
       </div>
+
+      {/* Pinned Slack Messages */}
+      <PinnedSlackMessages />
+
+      {/* Account Team */}
+      <AccountTeam />
+
+      {/* Bottom Links */}
+      <BottomLinks />
     </main>
   </div>
 );

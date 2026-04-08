@@ -1,0 +1,41 @@
+import { motion } from "framer-motion";
+import { FileText, LayoutGrid, Headphones, ExternalLink } from "lucide-react";
+
+const links = [
+  { label: "Meeting Notes", description: "Access shared meeting notes and action items", icon: FileText, href: "#" },
+  { label: "Jira Board", description: "View the account Jira board and backlog", icon: LayoutGrid, href: "#" },
+  { label: "Support Queue", description: "Monitor open support tickets and SLAs", icon: Headphones, href: "#" },
+];
+
+const BottomLinks = () => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: 0.5, duration: 0.4 }}
+    className="grid grid-cols-1 md:grid-cols-3 gap-4"
+  >
+    {links.map((link, i) => (
+      <motion.a
+        key={link.label}
+        href={link.href}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.55 + i * 0.06 }}
+        className="glass-card p-5 flex items-start gap-4 group hover:border-primary/30 transition-colors cursor-pointer"
+      >
+        <div className="p-2.5 rounded-lg bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
+          <link.icon className="w-5 h-5" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5">
+            <p className="text-sm font-semibold text-foreground">{link.label}</p>
+            <ExternalLink className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+          </div>
+          <p className="text-xs text-muted-foreground mt-0.5">{link.description}</p>
+        </div>
+      </motion.a>
+    ))}
+  </motion.div>
+);
+
+export default BottomLinks;

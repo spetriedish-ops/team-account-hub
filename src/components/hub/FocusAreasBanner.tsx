@@ -1,21 +1,22 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp, Plus, X, Target } from "lucide-react";
+import type { Account } from "@/data/accounts";
 
 interface FocusItem {
   id: string;
   label: string;
 }
 
-const defaultFocusItems: FocusItem[] = [
-  { id: "1", label: "Executive Onsite Prep" },
-  { id: "2", label: "Expansion Opportunity" },
-  { id: "3", label: "Q3 Renewal Strategy" },
-];
+interface Props {
+  account: Account;
+}
 
-const FocusAreasBanner = () => {
+const FocusAreasBanner = ({ account }: Props) => {
   const [isOpen, setIsOpen] = useState(true);
-  const [items, setItems] = useState<FocusItem[]>(defaultFocusItems);
+  const [items, setItems] = useState<FocusItem[]>(
+    account.keyFocusAreas.map((label, i) => ({ id: String(i), label }))
+  );
   const [isAdding, setIsAdding] = useState(false);
   const [newLabel, setNewLabel] = useState("");
 
@@ -38,7 +39,9 @@ const FocusAreasBanner = () => {
       >
         <div className="flex items-center gap-2">
           <Target className="w-4 h-4 text-primary" />
-          <h2 className="text-sm font-semibold text-foreground">Key Focus Areas</h2>
+          <h2 className="text-sm font-semibold text-foreground">
+            Key Focus Areas
+          </h2>
           <span className="ml-1 inline-flex items-center justify-center px-1.5 py-0.5 text-[11px] font-semibold rounded bg-muted text-muted-foreground">
             {items.length}
           </span>

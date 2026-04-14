@@ -3,6 +3,56 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
+function googleCalendarApi(googleToken: string): Plugin {
+  return {
+    name: "google-calendar-api",
+    configureServer(server) {
+      server.middlewares.use("/api/calendar/next-meeting", (_req, res) => {
+        const now = new Date().toISOString();
+        // Look 7 days ahead for the next meeting
+        const future = new Date(
+          Date.now() + 7 * 24 * 60 * 60 * 1000
+        ).toISOString();
+
+        const url = new URL(
+          "https://www.googleapis.com/calendar/v3/calendars/primary/events"
+        );
+        url.searchParams.set("timeMin", now);
+        url.searchParams.set("timeMax", future);
+        url.searchParams.set("maxResults", "10");
+        url.searchParams.set("singleEvents", "true");
+        url.searchParams.set("orderBy", "startTime");
+
+        fetch(url.toString(), {
+          headers: {
+            Authorization: `Bearer ${googleToken}`,
+            Accept: "application/json",
+          },
+        })
+          .then((r) => r.json())
+          .then((data) => {
+            // Find the first timed (non-all-day) event, falling back to
+            // the first event of any kind if there are no timed events.
+            const items: any[] = data.items ?? [];
+            const timed = items.find(
+              (e: any) => e.start?.dateTime && e.status !== "cancelled"
+            );
+            const event = timed ?? items[0] ?? null;
+
+            res.setHeader("Content-Type", "application/json");
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            res.end(JSON.stringify(event));
+          })
+          .catch((err: any) => {
+            res.statusCode = 502;
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify({ error: err.message }));
+          });
+      });
+    },
+  };
+}
+
 function jiraWriteApi(jiraToken: string): Plugin {
   const jiraSite = "https://one-atlas-fnjq.atlassian.net";
 
@@ -99,6 +149,8 @@ export default defineConfig(({ mode }) => {
       react(),
       mode === "development" && componentTagger(),
       env.VITE_JIRA_API_TOKEN && jiraWriteApi(env.VITE_JIRA_API_TOKEN),
+      env.VITE_GOOGLE_ACCESS_TOKEN &&
+        googleCalendarApi(env.VITE_GOOGLE_ACCESS_TOKEN),
     ].filter(Boolean),
     resolve: {
       alias: {

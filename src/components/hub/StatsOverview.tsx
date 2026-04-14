@@ -3,7 +3,7 @@ import { ClipboardList, UserPlus, Headphones, Calendar } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import type { Account } from "@/data/accounts";
 import { fetchAccountIssues, fetchUnclaimedIssues, fetchP1Issues } from "@/services/jiraService";
-import { MOCK_MEETINGS } from "@/data/mockActivity";
+import { useNextMeeting } from "@/hooks/useNextMeeting";
 
 interface Props {
   account: Account;
@@ -28,7 +28,7 @@ const StatsOverview = ({ account }: Props) => {
     staleTime: 30_000,
   });
 
-  const meetings = MOCK_MEETINGS[account.jiraLabel] ?? [];
+  const { data: nextMeeting, isLoading: meetingLoading } = useNextMeeting();
 
   // Use Jira data only if the query succeeded AND returned results;
   // otherwise fall back to the account's static counts so the demo
@@ -45,7 +45,6 @@ const StatsOverview = ({ account }: Props) => {
       : account.attentionFlags.includes("P1 Ticket")
         ? 1
         : 0;
-  const meetingCount = meetings.length;
 
   const stats = [
     {
@@ -71,15 +70,6 @@ const StatsOverview = ({ account }: Props) => {
       icon: Headphones,
       color: p1Count > 0 ? "text-destructive" : "text-hub-success",
     },
-    {
-      label: "Recent Meetings",
-      value: String(meetingCount),
-      change: meetings[0]
-        ? `Last: ${new Date(meetings[0].date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}`
-        : "None scheduled",
-      icon: Calendar,
-      color: "text-hub-info",
-    },
   ];
 
   return (
@@ -102,6 +92,41 @@ const StatsOverview = ({ account }: Props) => {
           <p className="text-xs text-muted-foreground">{s.change}</p>
         </motion.div>
       ))}
+
+      {/* Next Meeting tile — powered by Google Calendar */}
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 + 3 * 0.06, duration: 0.3 }}
+        className="atlassian-card p-4 space-y-2"
+      >
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            Next Meeting
+          </span>
+          <Calendar className="w-4 h-4 text-hub-info" />
+        </div>
+        {meetingLoading ? (
+          <>
+            <p className="text-sm font-semibold text-foreground">Loading…</p>
+            <p className="text-xs text-muted-foreground">Checking calendar</p>
+          </>
+        ) : nextMeeting ? (
+          <>
+            <p className="text-sm font-semibold text-foreground leading-tight truncate" title={nextMeeting.title}>
+              {nextMeeting.title}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {nextMeeting.date} · {nextMeeting.time}
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="text-sm font-semibold text-foreground">—</p>
+            <p className="text-xs text-muted-foreground">No upcoming meetings</p>
+          </>
+        )}
+      </motion.div>
     </div>
   );
 };

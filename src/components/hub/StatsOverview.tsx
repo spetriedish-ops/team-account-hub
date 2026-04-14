@@ -1,9 +1,11 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ClipboardList, UserPlus, Headphones, Calendar } from "lucide-react";
+import { ClipboardList, UserPlus, Headphones, Calendar, LogIn, LogOut, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import type { Account } from "@/data/accounts";
 import { fetchAccountIssues, fetchUnclaimedIssues, fetchP1Issues } from "@/services/jiraService";
-import { useNextMeeting } from "@/hooks/useNextMeeting";
+import { useGoogleCalendar } from "@/hooks/useGoogleCalendar";
+import type { CalendarEvent } from "@/services/googleCalendarService";
 
 interface Props {
   account: Account;
@@ -28,7 +30,20 @@ const StatsOverview = ({ account }: Props) => {
     staleTime: 30_000,
   });
 
-  const { data: nextMeeting, isLoading: meetingLoading } = useNextMeeting();
+  const { status: calStatus, signIn, signOut, isConnected, fetchForAccount } = useGoogleCalendar();
+  const [nextMeeting, setNextMeeting] = useState<CalendarEvent | null>(null);
+
+  // Whenever connected or account changes, fetch the next future event mentioning this account
+  useEffect(() => {
+    if (!isConnected) { setNextMeeting(null); return; }
+    fetchForAccount(account.name).then((evts) => {
+      // Events are already filtered to future-only in fetchCalendarEvents; take the first
+      const upcoming = evts
+        .filter((e) => new Date(e.date) >= new Date())
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      setNextMeeting(upcoming[0] ?? null);
+    });
+  }, [isConnected, account.name, fetchForAccount]);
 
   // Use Jira data only if the query succeeded AND returned results;
   // otherwise fall back to the account's static counts so the demo
@@ -93,7 +108,7 @@ const StatsOverview = ({ account }: Props) => {
         </motion.div>
       ))}
 
-      {/* Next Meeting tile — powered by Google Calendar */}
+      {/* Next Meeting tile — powered by Google Calendar OAuth */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
@@ -104,12 +119,45 @@ const StatsOverview = ({ account }: Props) => {
           <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
             Next Meeting
           </span>
-          <Calendar className="w-4 h-4 text-hub-info" />
+          <div className="flex items-center gap-1.5">
+            {isConnected ? (
+              <button
+                onClick={signOut}
+                title="Disconnect Google Calendar"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <LogOut className="w-3 h-3" />
+              </button>
+            ) : (
+              <button
+                onClick={() => signIn()}
+                title="Connect Google Calendar"
+                className="text-primary hover:text-primary/80 transition-colors"
+              >
+                <LogIn className="w-3 h-3" />
+              </button>
+            )}
+            <Calendar className="w-4 h-4 text-hub-info" />
+          </div>
         </div>
-        {meetingLoading ? (
+
+        {calStatus === "loading" ? (
           <>
-            <p className="text-sm font-semibold text-foreground">Loading…</p>
+            <div className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
+              <Loader2 className="w-3 h-3 animate-spin" />
+              Loading…
+            </div>
             <p className="text-xs text-muted-foreground">Checking calendar</p>
+          </>
+        ) : !isConnected ? (
+          <>
+            <p className="text-sm font-semibold text-foreground">—</p>
+            <button
+              onClick={() => signIn()}
+              className="text-xs text-primary hover:underline font-medium"
+            >
+              Connect Google Calendar
+            </button>
           </>
         ) : nextMeeting ? (
           <>
@@ -117,13 +165,16 @@ const StatsOverview = ({ account }: Props) => {
               {nextMeeting.title}
             </p>
             <p className="text-xs text-muted-foreground">
-              {nextMeeting.date} · {nextMeeting.time}
+              {new Date(nextMeeting.date).toLocaleDateString("en-US", {
+                weekday: "short", month: "short", day: "numeric",
+              })}
+              {nextMeeting.startTime && ` · ${nextMeeting.startTime}`}
             </p>
           </>
         ) : (
           <>
             <p className="text-sm font-semibold text-foreground">—</p>
-            <p className="text-xs text-muted-foreground">No upcoming meetings</p>
+            <p className="text-xs text-muted-foreground">No upcoming meetings for {account.name}</p>
           </>
         )}
       </motion.div>

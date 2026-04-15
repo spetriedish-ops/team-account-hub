@@ -148,7 +148,7 @@ const AccountRow = ({
               {account.name}
             </button>
             <span className="text-[11px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-medium">
-              {account.tier}
+              Strategic
             </span>
           </div>
           {account.attentionFlags.length > 0 && (
@@ -160,10 +160,10 @@ const AccountRow = ({
           )}
         </div>
 
-        {/* ARR */}
+        {/* ACV */}
         <div className="hidden sm:block text-right w-20">
           <p className="text-sm font-semibold text-foreground">{account.arr}</p>
-          <p className="text-[11px] text-muted-foreground">ARR</p>
+          <p className="text-[11px] text-muted-foreground">ACV</p>
         </div>
 
         {/* Health */}
@@ -295,7 +295,7 @@ const Portfolio = () => {
             color: "text-primary",
           },
           {
-            label: "Portfolio ARR",
+            label: "Portfolio ACV",
             value: `$${(totalArr / 1_000_000).toFixed(1)}M`,
             sub: "Combined annual revenue",
             icon: Users,
@@ -379,6 +379,18 @@ const Portfolio = () => {
           </span>
         </div>
       </motion.div>
+
+      {/* Column Headers */}
+      <div className="flex items-center gap-4 px-5 py-2 text-[11px] font-semibold text-muted-foreground uppercase tracking-wide">
+        <div className="flex-1 min-w-0">Account</div>
+        <div className="hidden sm:block text-right w-20">ACV</div>
+        <div className="w-20 text-center">Health</div>
+        <div className="hidden md:block text-right w-28">Renewal Date</div>
+        <div className="hidden lg:flex items-center gap-4 w-32">
+          <div className="text-center w-full">Tasks</div>
+        </div>
+        <div className="w-4" />
+      </div>
 
       {/* Account List */}
       <div className="space-y-3">

@@ -56,7 +56,7 @@ const AccountHub = () => {
       <PinnedSlackMessages account={account} />
       <ConfluenceFeed account={account} />
       <AccountTeam account={account} />
-      <BottomLinks />
+      <BottomLinks account={account} />
     </div>
   );
 };

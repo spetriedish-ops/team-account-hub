@@ -9,7 +9,7 @@ import ActivityFeed from "@/components/hub/ActivityFeed";
 import GrayAreaQueue from "@/components/hub/GrayAreaQueue";
 import PinnedSlackMessages from "@/components/hub/PinnedSlackMessages";
 import AccountTeam from "@/components/hub/AccountTeam";
-import RecentMeetings from "@/components/hub/RecentMeetings";
+import ConfluenceFeed from "@/components/hub/ConfluenceFeed";
 import BottomLinks from "@/components/hub/BottomLinks";
 
 const AccountHub = () => {
@@ -54,7 +54,7 @@ const AccountHub = () => {
       </div>
 
       <PinnedSlackMessages account={account} />
-      <RecentMeetings account={account} />
+      <ConfluenceFeed account={account} />
       <AccountTeam account={account} />
       <BottomLinks />
     </div>

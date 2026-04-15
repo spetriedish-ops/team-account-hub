@@ -19,6 +19,8 @@ export interface Account {
   keyFocusAreas: string[];
   team: TeamMember[];
   jiraLabel: string;
+  /** Confluence space key for this account's pages feed */
+  confluenceSpaceKey: string;
 }
 
 export const ACCOUNTS: Account[] = [
@@ -44,6 +46,7 @@ export const ACCOUNTS: Account[] = [
       { role: "SE", name: "Alex Rodriguez", owns: "Technical", avatar: "AR" },
     ],
     jiraLabel: "account:acme-corp",
+    confluenceSpaceKey: "ACME",
   },
   {
     id: 2,
@@ -66,6 +69,7 @@ export const ACCOUNTS: Account[] = [
       { role: "SE", name: "Emma Wilson", owns: "Architecture", avatar: "EW" },
     ],
     jiraLabel: "account:globex",
+    confluenceSpaceKey: "GLOBEX",
   },
   {
     id: 3,
@@ -84,6 +88,7 @@ export const ACCOUNTS: Account[] = [
       { role: "CSM", name: "Lisa Martinez", owns: "Operations", avatar: "LM" },
     ],
     jiraLabel: "account:initech",
+    confluenceSpaceKey: "INITECH",
   },
   {
     id: 4,
@@ -122,6 +127,7 @@ export const ACCOUNTS: Account[] = [
       },
     ],
     jiraLabel: "account:umbrella-corp",
+    confluenceSpaceKey: "UMBRELLA",
   },
   {
     id: 5,
@@ -145,6 +151,7 @@ export const ACCOUNTS: Account[] = [
       },
     ],
     jiraLabel: "account:wayne",
+    confluenceSpaceKey: "WAYNE",
   },
   {
     id: 6,
@@ -169,6 +176,7 @@ export const ACCOUNTS: Account[] = [
       },
     ],
     jiraLabel: "account:stark",
+    confluenceSpaceKey: "STARK",
   },
 ];
 

@@ -143,6 +143,22 @@ export default defineConfig(({ mode }) => {
             });
           },
         },
+        "/confluence-api": {
+          target: "https://one-atlas-fnjq.atlassian.net",
+          changeOrigin: true,
+          rewrite: (p) => p.replace(/^\/confluence-api/, ""),
+          configure: (proxy) => {
+            proxy.on("proxyReq", (proxyReq) => {
+              const token = env.VITE_JIRA_API_TOKEN;
+              if (token) {
+                proxyReq.setHeader("Authorization", `Basic ${token}`);
+              }
+              proxyReq.setHeader("X-Atlassian-Token", "no-check");
+              proxyReq.removeHeader("origin");
+              proxyReq.removeHeader("referer");
+            });
+          },
+        },
       },
     },
     plugins: [

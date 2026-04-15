@@ -44,18 +44,28 @@ const AnimatedRoutes = () => {
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID ?? "";
 
-const App = () => (
-  <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AnimatedRoutes />
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
-  </GoogleOAuthProvider>
+const AppInner = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <AnimatedRoutes />
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
 );
+
+// Only wrap with GoogleOAuthProvider when a client ID is configured.
+// When unconfigured, useGoogleCalendar returns a safe stub that never calls
+// useGoogleLogin, so the GSI script never loads and no errors are thrown.
+const App = () =>
+  GOOGLE_CLIENT_ID ? (
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+      <AppInner />
+    </GoogleOAuthProvider>
+  ) : (
+    <AppInner />
+  );
 
 export default App;

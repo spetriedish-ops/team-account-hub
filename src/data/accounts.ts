@@ -127,7 +127,7 @@ export const ACCOUNTS: Account[] = [
       },
     ],
     jiraLabel: "account:umbrella-corp",
-    confluenceSpaceKey: "UMBRELLA",
+    confluenceSpaceKey: "UC",
   },
   {
     id: 5,

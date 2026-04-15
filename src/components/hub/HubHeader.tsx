@@ -40,7 +40,7 @@ const HubHeader = ({ account }: Props) => {
           </h2>
           <div className="flex items-center gap-3 mt-2">
             <span className="text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground font-medium">
-              {account.tier}
+              Strategic
             </span>
             <select
               value={health}

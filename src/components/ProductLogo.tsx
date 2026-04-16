@@ -28,7 +28,7 @@ const SlackIcon = ({ size }: { size: number }) => (
 
 export const ProductLogo = ({ product, className = "", size = 16 }: Props) => {
   // @atlaskit/logo "small" renders at 24px internally; scale up to fill the requested size.
-  const scale = size / 24;
+  const scale = size / 20;
   switch (product) {
     case "jira":
       return (

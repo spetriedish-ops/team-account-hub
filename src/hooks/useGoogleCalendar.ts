@@ -1,15 +1,15 @@
 /**
- * useGoogleCalendar
+ * useGoogleCalendar — Context-based Google Calendar integration
  *
- * Exports two hooks:
- *   - useGoogleCalendarEnabled  — uses useGoogleLogin; MUST be rendered inside GoogleOAuthProvider
- *   - useGoogleCalendarDisabled — safe no-op stub; never touches @react-oauth/google
- *
- * The correct hook is selected in GoogleCalendarProvider (see App.tsx) based on
- * whether VITE_GOOGLE_CLIENT_ID is configured, so rules-of-hooks are never violated.
+ * Architecture:
+ *   - useGoogleCalendar()         reads from GoogleCalendarContext (safe anywhere)
+ *   - GoogleCalendarContext       provided by one of two providers chosen in App.tsx
+ *   - useGoogleCalendarEnabled()  real OAuth via useGoogleLogin — only called inside GoogleOAuthProvider
+ *   - useGoogleCalendarDisabled() safe no-op stub — used when VITE_GOOGLE_CLIENT_ID is not set
  */
 
 import { useState, useCallback, useEffect, createContext, useContext } from "react";
+import { useGoogleLogin, googleLogout } from "@react-oauth/google";
 import { fetchCalendarEvents, fetchAllUpcomingEvents, type CalendarEvent } from "@/services/googleCalendarService";
 
 const STORAGE_KEY = "gcal_access_token";
@@ -29,9 +29,6 @@ export interface UseGoogleCalendarReturn {
 }
 
 // ─── Context ──────────────────────────────────────────────────────────────────
-// Components read calendar state from context rather than calling the hook
-// directly — this is what allows us to select the right implementation once
-// at the top of the tree without violating rules of hooks downstream.
 
 const GoogleCalendarContext = createContext<UseGoogleCalendarReturn>({
   status: "unconfigured",
@@ -42,22 +39,20 @@ const GoogleCalendarContext = createContext<UseGoogleCalendarReturn>({
   fetchForAccount: async () => [],
 });
 
+export { GoogleCalendarContext };
+
+/** Read calendar state — safe to call anywhere in the component tree */
 export function useGoogleCalendar(): UseGoogleCalendarReturn {
   return useContext(GoogleCalendarContext);
 }
 
-export { GoogleCalendarContext };
+// ─── Enabled hook ─────────────────────────────────────────────────────────────
+// NOTE: This file imports useGoogleLogin at the top level. That is intentional —
+// the module is only ever *executed* (i.e. this hook is only ever *called*) when
+// GoogleOAuthProvider is present in the tree (see App.tsx). The import itself is
+// safe; it's the *call* to useGoogleLogin that requires the provider.
 
-// ─── Enabled hook (requires GoogleOAuthProvider in tree) ──────────────────────
 export function useGoogleCalendarEnabled(): UseGoogleCalendarReturn {
-  // Import useGoogleLogin only when this hook is actually used (i.e. inside
-  // GoogleOAuthProvider). Using a direct import here is fine because this
-  // function is only ever called from GoogleCalendarEnabledProvider which is
-  // only rendered when VITE_GOOGLE_CLIENT_ID is set (and GoogleOAuthProvider
-  // is therefore present).
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { useGoogleLogin, googleLogout } = require("@react-oauth/google");
-
   const [status, setStatus] = useState<GoogleCalendarStatus>("idle");
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -75,7 +70,7 @@ export function useGoogleCalendarEnabled(): UseGoogleCalendarReturn {
   }, []);
 
   const googleLogin = useGoogleLogin({
-    onSuccess: async (tokenResponse: { access_token: string }) => {
+    onSuccess: async (tokenResponse) => {
       const token = tokenResponse.access_token;
       sessionStorage.setItem(STORAGE_KEY, token);
       sessionStorage.setItem(STORAGE_EXPIRY_KEY, String(Date.now() + 3600 * 1000));
@@ -115,7 +110,9 @@ export function useGoogleCalendarEnabled(): UseGoogleCalendarReturn {
   return { status, events, signIn, signOut, isConnected: status === "connected", fetchForAccount };
 }
 
-// ─── Disabled stub (safe to use anywhere, never loads Google scripts) ─────────
+// ─── Disabled stub ────────────────────────────────────────────────────────────
+// Never imports or calls anything from @react-oauth/google.
+
 export function useGoogleCalendarDisabled(): UseGoogleCalendarReturn {
   return {
     status: "unconfigured",

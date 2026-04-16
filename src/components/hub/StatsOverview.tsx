@@ -61,6 +61,7 @@ const StatsOverview = ({ account }: Props) => {
         ? 1
         : 0;
 
+  // Link to ITO queue filtered to High/Highest/Critical priority open tickets
   const ITO_QUEUE_URL =
     "https://one-atlas-fnjq.atlassian.net/jira/servicedesk/projects/ITO/queues/custom/15?atlOrigin=eyJpIjoiYjI0ZjMxYzdjMTIzNDk3NWFhZDc1NzJiMjA3M2U3YTMiLCJwIjoiaiJ9";
 

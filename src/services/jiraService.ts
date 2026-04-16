@@ -96,8 +96,10 @@ export async function fetchP1Issues(
 }
 
 export async function fetchHighPriorityITOIssues(): Promise<JiraIssue[]> {
+  // ITO (JSM) uses "High" as the top priority level. The "in" operator times
+  // out on JSM projects, so we use "= High" which is equivalent here.
   return fetchIssuesByJql(
-    `project = ITO AND status != Done ORDER BY priority ASC, created DESC`
+    `project = ITO AND status != Done AND priority = High ORDER BY created DESC`
   );
 }
 

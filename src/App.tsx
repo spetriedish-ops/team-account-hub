@@ -10,6 +10,11 @@ import PageTransition from "@/components/PageTransition";
 import Portfolio from "./pages/Portfolio";
 import AccountHub from "./pages/AccountHub";
 import NotFound from "./pages/NotFound";
+import {
+  GoogleCalendarContext,
+  useGoogleCalendarEnabled,
+  useGoogleCalendarDisabled,
+} from "@/hooks/useGoogleCalendar";
 
 const queryClient = new QueryClient();
 
@@ -44,7 +49,31 @@ const AnimatedRoutes = () => {
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID ?? "";
 
-const AppInner = () => (
+// ─── Google Calendar context providers ───────────────────────────────────────
+// These components sit inside/outside GoogleOAuthProvider as appropriate and
+// supply calendar state via context. Components call useGoogleCalendar() to
+// read from context — they never call useGoogleLogin directly, so rules of
+// hooks are never violated regardless of the provider tree.
+
+function GoogleCalendarEnabledProvider({ children }: { children: React.ReactNode }) {
+  const value = useGoogleCalendarEnabled();
+  return (
+    <GoogleCalendarContext.Provider value={value}>
+      {children}
+    </GoogleCalendarContext.Provider>
+  );
+}
+
+function GoogleCalendarDisabledProvider({ children }: { children: React.ReactNode }) {
+  const value = useGoogleCalendarDisabled();
+  return (
+    <GoogleCalendarContext.Provider value={value}>
+      {children}
+    </GoogleCalendarContext.Provider>
+  );
+}
+
+const AppRoutes = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
@@ -56,16 +85,20 @@ const AppInner = () => (
   </QueryClientProvider>
 );
 
-// Only wrap with GoogleOAuthProvider when a client ID is configured.
-// When unconfigured, useGoogleCalendar returns a safe stub that never calls
-// useGoogleLogin, so the GSI script never loads and no errors are thrown.
+// When a Google Client ID is configured: wrap with GoogleOAuthProvider and
+// use the real hook inside it. When not configured: use the safe stub and
+// never load any Google scripts.
 const App = () =>
   GOOGLE_CLIENT_ID ? (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <AppInner />
+      <GoogleCalendarEnabledProvider>
+        <AppRoutes />
+      </GoogleCalendarEnabledProvider>
     </GoogleOAuthProvider>
   ) : (
-    <AppInner />
+    <GoogleCalendarDisabledProvider>
+      <AppRoutes />
+    </GoogleCalendarDisabledProvider>
   );
 
 export default App;

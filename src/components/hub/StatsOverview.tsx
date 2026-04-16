@@ -149,6 +149,11 @@ const StatsOverview = ({ account }: Props) => {
             </div>
             <p className="text-xs text-muted-foreground">Checking calendar</p>
           </>
+        ) : calStatus === "unconfigured" ? (
+          <>
+            <p className="text-sm font-semibold text-foreground">—</p>
+            <p className="text-xs text-muted-foreground">Calendar not configured</p>
+          </>
         ) : !isConnected ? (
           <>
             <p className="text-sm font-semibold text-foreground">—</p>

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ClipboardList, UserPlus, Headphones, Calendar, LogIn, LogOut, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import type { Account } from "@/data/accounts";
-import { fetchAccountIssues, fetchUnclaimedIssues, fetchP1Issues } from "@/services/jiraService";
+import { fetchAccountIssues, fetchUnclaimedIssues, fetchHighPriorityITOIssues } from "@/services/jiraService";
 import { useGoogleCalendar } from "@/hooks/useGoogleCalendar";
 import type { CalendarEvent } from "@/services/googleCalendarService";
 
@@ -25,8 +25,8 @@ const StatsOverview = ({ account }: Props) => {
   });
 
   const { data: p1Issues } = useQuery({
-    queryKey: ["p1Issues", account.jiraLabel],
-    queryFn: () => fetchP1Issues(account.jiraLabel),
+    queryKey: ["itoHighPriorityIssues"],
+    queryFn: () => fetchHighPriorityITOIssues(),
     staleTime: 30_000,
   });
 
@@ -61,6 +61,9 @@ const StatsOverview = ({ account }: Props) => {
         ? 1
         : 0;
 
+  const ITO_QUEUE_URL =
+    "https://one-atlas-fnjq.atlassian.net/jira/servicedesk/projects/ITO/queues/custom/15?atlOrigin=eyJpIjoiYjI0ZjMxYzdjMTIzNDk3NWFhZDc1NzJiMjA3M2U3YTMiLCJwIjoiaiJ9";
+
   const stats = [
     {
       label: "Open Tasks",
@@ -79,34 +82,55 @@ const StatsOverview = ({ account }: Props) => {
       color: unclaimedCount > 0 ? "text-hub-warning" : "text-hub-success",
     },
     {
-      label: "P1 Tickets",
+      label: "High Priority Tickets",
       value: String(p1Count),
-      change: p1Count > 0 ? "Active critical issues" : "No critical issues ✓",
+      change: p1Count > 0 ? "Open in ITO queue" : "No high priority issues ✓",
       icon: Headphones,
       color: p1Count > 0 ? "text-destructive" : "text-hub-success",
+      href: ITO_QUEUE_URL,
     },
   ];
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      {stats.map((s, i) => (
-        <motion.div
-          key={s.label}
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 + i * 0.06, duration: 0.3 }}
-          className="atlassian-card p-4 space-y-2"
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              {s.label}
-            </span>
-            <s.icon className={`w-4 h-4 ${s.color}`} />
-          </div>
-          <p className="text-2xl font-semibold text-foreground">{s.value}</p>
-          <p className="text-xs text-muted-foreground">{s.change}</p>
-        </motion.div>
-      ))}
+      {stats.map((s, i) => {
+        const inner = (
+          <>
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                {s.label}
+              </span>
+              <s.icon className={`w-4 h-4 ${s.color}`} />
+            </div>
+            <p className="text-2xl font-semibold text-foreground">{s.value}</p>
+            <p className="text-xs text-muted-foreground">{s.change}</p>
+          </>
+        );
+        return s.href ? (
+          <motion.a
+            key={s.label}
+            href={s.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 + i * 0.06, duration: 0.3 }}
+            className="atlassian-card p-4 space-y-2 block hover:ring-2 hover:ring-primary/30 transition-all"
+          >
+            {inner}
+          </motion.a>
+        ) : (
+          <motion.div
+            key={s.label}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 + i * 0.06, duration: 0.3 }}
+            className="atlassian-card p-4 space-y-2"
+          >
+            {inner}
+          </motion.div>
+        );
+      })}
 
       {/* Next Meeting tile — powered by Google Calendar OAuth */}
       <motion.div

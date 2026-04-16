@@ -95,6 +95,12 @@ export async function fetchP1Issues(
   );
 }
 
+export async function fetchHighPriorityITOIssues(): Promise<JiraIssue[]> {
+  return fetchIssuesByJql(
+    `project = ITO AND status != Done ORDER BY priority ASC, created DESC`
+  );
+}
+
 export async function fetchAllOpenIssues(): Promise<JiraIssue[]> {
   return fetchIssuesByJql(
     `project = ${JIRA_PROJECT} AND status != Done ORDER BY priority ASC, updated DESC`

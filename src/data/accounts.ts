@@ -3,6 +3,8 @@ export interface TeamMember {
   name: string;
   owns: string;
   avatar: string;
+  /** Optional path to a headshot image (relative to /public) */
+  avatarUrl?: string;
 }
 
 export interface Account {
@@ -112,18 +114,40 @@ export const ACCOUNTS: Account[] = [
       "Support SLA improvement",
     ],
     team: [
-      { role: "AE", name: "Robert Zhang", owns: "Strategic", avatar: "RZ" },
       {
-        role: "CSM",
-        name: "Patricia Evans",
-        owns: "Crisis Management",
-        avatar: "PE",
+        role: "AE",
+        name: "Ted Lasso",
+        owns: "Strategic",
+        avatar: "TL",
+        avatarUrl: "/headshots/ted-lasso.jpg",
       },
       {
         role: "SE",
-        name: "Christopher Lee",
-        owns: "Implementation",
-        avatar: "CL",
+        name: "Coach Beard",
+        owns: "Technical",
+        avatar: "CB",
+        avatarUrl: "/headshots/coach-beard.png",
+      },
+      {
+        role: "CSM",
+        name: "Nathan Shelley",
+        owns: "Adoption",
+        avatar: "NS",
+        avatarUrl: "/headshots/nathan-shelley.png",
+      },
+      {
+        role: "SA",
+        name: "Roy Kent",
+        owns: "Architecture",
+        avatar: "RK",
+        avatarUrl: "/headshots/roy-kent.png",
+      },
+      {
+        role: "SEM",
+        name: "Rebecca Welton",
+        owns: "Executive",
+        avatar: "RW",
+        avatarUrl: "/headshots/rebecca-welton.png",
       },
     ],
     jiraLabel: "account:umbrella-corp",

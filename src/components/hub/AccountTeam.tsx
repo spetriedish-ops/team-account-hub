@@ -24,6 +24,7 @@ const AccountTeam = ({ account }: Props) => {
       title: m.role,
       accountRole: m.owns,
       avatar: m.avatar,
+      avatarUrl: m.avatarUrl,
     }))
   );
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -81,11 +82,19 @@ const AccountTeam = ({ account }: Props) => {
             >
               <X className="w-3.5 h-3.5" />
             </button>
-            <div
-              className={`w-10 h-10 mx-auto rounded-full flex items-center justify-center text-xs font-semibold ${avatarColors[i % avatarColors.length]}`}
-            >
-              {m.avatar}
-            </div>
+            {m.avatarUrl ? (
+              <img
+                src={m.avatarUrl}
+                alt={m.name}
+                className="w-10 h-10 mx-auto rounded-full object-cover"
+              />
+            ) : (
+              <div
+                className={`w-10 h-10 mx-auto rounded-full flex items-center justify-center text-xs font-semibold ${avatarColors[i % avatarColors.length]}`}
+              >
+                {m.avatar}
+              </div>
+            )}
             <div>
               <p className="text-sm font-medium text-foreground truncate">
                 {m.name}

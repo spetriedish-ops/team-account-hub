@@ -17,6 +17,8 @@ const ACCOUNT_LINKS: Record<
       "https://one-atlas-fnjq.atlassian.net/wiki/spaces/UC/pages/11436345/Template+-+Meeting+notes",
     jiraBoard:
       "https://one-atlas-fnjq.atlassian.net/jira/core/projects/HUB/board?filter=labels+%3D+%22account%3Aumbrella-corp%22&groupBy=status&atlOrigin=eyJpIjoiNTU2OGQ3OTM5YTJhNDdjNDkyNjgzM2Q3MzU0Y2Q3ODciLCJwIjoiaiJ9",
+    supportQueue:
+      "https://one-atlas-fnjq.atlassian.net/jira/servicedesk/projects/ITO/queues/custom/15?atlOrigin=eyJpIjoiNzQ1ODQyM2M0ZjQyNDVkNDlkNTIxNDM3MGVhYzFkZTYiLCJwIjoiaiJ9",
   },
 };
 

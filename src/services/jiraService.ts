@@ -66,17 +66,18 @@ export async function fetchIssuesByJql(jql: string): Promise<JiraIssue[]> {
 export async function fetchAccountIssues(
   accountLabel: string
 ): Promise<JiraIssue[]> {
+  // Open Tasks = items labelled for this account in active statuses
   return fetchIssuesByJql(
-    `project = ${JIRA_PROJECT} AND labels = "${accountLabel}" AND status != Done ORDER BY priority ASC, updated DESC`
+    `project = ${JIRA_PROJECT} AND labels = "${accountLabel}" AND status in ("Claimed", "Gray Area", "In Progress") ORDER BY priority ASC, updated DESC`
   );
 }
 
 export async function fetchGrayAreaIssues(
   accountLabel: string
 ): Promise<JiraIssue[]> {
-  // Gray Area = unclaimed issues (no assignee) — these are the dangerous ones
+  // Unclaimed Tasks = issues in the "Gray Area" status (no owner yet)
   return fetchIssuesByJql(
-    `project = ${JIRA_PROJECT} AND labels = "${accountLabel}" AND assignee is EMPTY AND status != Done ORDER BY priority ASC, created DESC`
+    `project = ${JIRA_PROJECT} AND labels = "${accountLabel}" AND status = "Gray Area" ORDER BY priority ASC, created DESC`
   );
 }
 

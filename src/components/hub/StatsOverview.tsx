@@ -65,6 +65,9 @@ const StatsOverview = ({ account }: Props) => {
   const ITO_QUEUE_URL =
     "https://one-atlas-fnjq.atlassian.net/jira/servicedesk/projects/ITO/queues/custom/15?atlOrigin=eyJpIjoiYjI0ZjMxYzdjMTIzNDk3NWFhZDc1NzJiMjA3M2U3YTMiLCJwIjoiaiJ9";
 
+  const openTasksUrl = `https://one-atlas-fnjq.atlassian.net/jira/core/projects/HUB/board?filter=labels+%3D+%22${encodeURIComponent(account.jiraLabel)}%22+AND+status+IN+%28%22Claimed%22%2C+%22Gray+Area%22%2C+%22In+Progress%22%29&groupBy=status&atlOrigin=eyJpIjoiMjg5ZmYyODA0MDY0NDE2N2I0MzhhYTY2YjNiZmM1YTciLCJwIjoiaiJ9`;
+  const unclaimedTasksUrl = `https://one-atlas-fnjq.atlassian.net/jira/core/projects/HUB/board?filter=status+%3D+%22Gray+Area%22&groupBy=status&atlOrigin=eyJpIjoiMTc5ZGVlZTQ0Y2VhNDEzM2E3ZGE0NWY5YjQ1NTEwYzIiLCJwIjoiaiJ9`;
+
   const stats = [
     {
       label: "Open Tasks",
@@ -74,6 +77,7 @@ const StatsOverview = ({ account }: Props) => {
         : `${Math.floor(openCount * 0.4)} in progress`,
       icon: ClipboardList,
       color: "text-primary",
+      href: openTasksUrl,
     },
     {
       label: "Unclaimed Tasks",
@@ -81,6 +85,7 @@ const StatsOverview = ({ account }: Props) => {
       change: unclaimedCount > 0 ? `${unclaimedCount} need attention` : "All assigned ✓",
       icon: UserPlus,
       color: unclaimedCount > 0 ? "text-hub-warning" : "text-hub-success",
+      href: unclaimedTasksUrl,
     },
     {
       label: "High Priority Tickets",

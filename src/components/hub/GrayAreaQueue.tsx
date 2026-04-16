@@ -49,6 +49,7 @@ const GrayAreaQueue = ({ account }: Props) => {
     queryKey: ["grayAreaIssues", account.jiraLabel],
     queryFn: () => fetchGrayAreaIssues(account.jiraLabel),
     staleTime: 30_000,
+    refetchInterval: 30_000,
   });
 
   // Fallback mock data if Jira unavailable — account-specific

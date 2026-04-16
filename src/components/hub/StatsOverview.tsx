@@ -16,18 +16,21 @@ const StatsOverview = ({ account }: Props) => {
     queryKey: ["accountIssues", account.jiraLabel],
     queryFn: () => fetchAccountIssues(account.jiraLabel),
     staleTime: 30_000,
+    refetchInterval: 30_000,
   });
 
   const { data: unclaimed } = useQuery({
     queryKey: ["unclaimedIssues", account.jiraLabel],
     queryFn: () => fetchUnclaimedIssues(account.jiraLabel),
     staleTime: 30_000,
+    refetchInterval: 30_000,
   });
 
   const { data: p1Issues } = useQuery({
     queryKey: ["itoHighPriorityIssues"],
     queryFn: () => fetchHighPriorityITOIssues(),
     staleTime: 30_000,
+    refetchInterval: 30_000,
   });
 
   const { status: calStatus, signIn, signOut, isConnected, fetchForAccount } = useGoogleCalendar();

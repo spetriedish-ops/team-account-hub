@@ -31,12 +31,12 @@ export const MOCK_ACTIVITIES: Record<string, ActivityItem[]> = {
     { type: "slack",      title: "Pinned: 'Legacy API docs received — starting scoping'",        time: "3 days ago",   icon: "", user: "Tom Brady",         url: "" },
   ],
   "account:umbrella-corp": [
-    { type: "jira",       title: "CRITICAL: Data migration failure — rollback in progress",       time: "45 min ago",   icon: "", user: "Christopher Lee",   url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-71" },
+    { type: "jira",       title: "CRITICAL: Data migration failure — rollback in progress",       time: "45 min ago",   icon: "", user: "Roy Kent",          url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-71" },
     { type: "support",    title: "JSM: SLA breach — 4 tickets exceeded response SLA",            time: "2 hours ago",  icon: "", user: "Support Team",      url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-70" },
-    { type: "loom",       title: "Umbrella Corp — Incident Review & Remediation Plan",            time: "4 hours ago",  icon: "", user: "Robert Zhang",      url: "https://www.loom.com/share/demo-umbrella-incident" },
-    { type: "jira",       title: "Security audit findings escalated to VP Engineering",           time: "6 hours ago",  icon: "", user: "Patricia Evans",    url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-68" },
-    { type: "slack",      title: "Pinned: '⚠️ CTO escalated to our VP — all hands needed'",     time: "1 day ago",    icon: "", user: "Robert Zhang",      url: "" },
-    { type: "confluence", title: "Incident postmortem template — In Review",                     time: "2 days ago",   icon: "", user: "Christopher Lee",   url: "https://one-atlas-fnjq.atlassian.net/wiki" },
+    { type: "loom",       title: "Umbrella Corp — Incident Review & Remediation Plan",            time: "4 hours ago",  icon: "", user: "Ted Lasso",         url: "https://www.loom.com/share/demo-umbrella-incident" },
+    { type: "jira",       title: "Security audit findings escalated to VP Engineering",           time: "6 hours ago",  icon: "", user: "Nathan Shelley",    url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-68" },
+    { type: "slack",      title: "Pinned: '⚠️ CTO escalated to our VP — all hands needed'",     time: "1 day ago",    icon: "", user: "Ted Lasso",         url: "" },
+    { type: "confluence", title: "Incident postmortem template — In Review",                     time: "2 days ago",   icon: "", user: "Coach Beard",       url: "https://one-atlas-fnjq.atlassian.net/wiki" },
   ],
   "account:wayne": [
     { type: "loom",       title: "Wayne Enterprises — Dashboard Mockup Walkthrough",              time: "2 hours ago",  icon: "", user: "Alfred Pennyworth", url: "https://www.loom.com/share/demo-wayne-dashboard" },
@@ -99,9 +99,9 @@ export const MOCK_PINNED_MESSAGES: Record<string, { author: string; timestamp: s
     { author: "Emma Wilson", timestamp: "3 days ago", text: "Architecture review for multi-region complete. No blockers.", channel: "#globex-technical" },
   ],
   "account:umbrella-corp": [
-    { author: "Robert Zhang", timestamp: "1 day ago", text: "⚠️ Customer CTO escalated migration failure directly to our VP. All hands on deck.", channel: "#umbrella-escalation" },
-    { author: "Patricia Evans", timestamp: "2 days ago", text: "Security audit remediation plan drafted — needs review ASAP.", channel: "#umbrella-support" },
-    { author: "Christopher Lee", timestamp: "3 days ago", text: "Rollback complete. Production stable but 3 workflows still degraded.", channel: "#umbrella-technical" },
+    { author: "Ted Lasso", timestamp: "1 day ago", text: "⚠️ Customer CTO escalated migration failure directly to our VP. All hands on deck.", channel: "#umbrella-escalation" },
+    { author: "Nathan Shelley", timestamp: "2 days ago", text: "Security audit remediation plan drafted — needs review ASAP.", channel: "#umbrella-support" },
+    { author: "Roy Kent", timestamp: "3 days ago", text: "Rollback complete. Production stable but 3 workflows still degraded.", channel: "#umbrella-technical" },
   ],
   "account:initech": [
     { author: "Tom Brady", timestamp: "3 days ago", text: "Legacy system API docs received from customer. Starting integration scoping.", channel: "#initech-general" },

@@ -27,13 +27,13 @@ const SlackIcon = ({ size }: { size: number }) => (
 );
 
 export const ProductLogo = ({ product, className = "", size = 16 }: Props) => {
-  // @atlaskit/logo renders at a fixed internal size; we scale it down with CSS
-  // to fit whatever size is requested.
+  // @atlaskit/logo "small" renders at 24px internally; scale up to fill the requested size.
+  const scale = size / 24;
   switch (product) {
     case "jira":
       return (
         <span className={`inline-flex items-center justify-center overflow-hidden shrink-0 ${className}`} style={{ width: size, height: size }}>
-          <span style={{ transform: `scale(${size / 32})`, transformOrigin: "center", display: "flex" }}>
+          <span style={{ transform: `scale(${scale})`, transformOrigin: "center", display: "flex" }}>
             <JiraIcon appearance="brand" size="small" />
           </span>
         </span>
@@ -41,7 +41,7 @@ export const ProductLogo = ({ product, className = "", size = 16 }: Props) => {
     case "confluence":
       return (
         <span className={`inline-flex items-center justify-center overflow-hidden shrink-0 ${className}`} style={{ width: size, height: size }}>
-          <span style={{ transform: `scale(${size / 32})`, transformOrigin: "center", display: "flex" }}>
+          <span style={{ transform: `scale(${scale})`, transformOrigin: "center", display: "flex" }}>
             <ConfluenceIcon appearance="brand" size="small" />
           </span>
         </span>
@@ -49,7 +49,7 @@ export const ProductLogo = ({ product, className = "", size = 16 }: Props) => {
     case "jsm":
       return (
         <span className={`inline-flex items-center justify-center overflow-hidden shrink-0 ${className}`} style={{ width: size, height: size }}>
-          <span style={{ transform: `scale(${size / 32})`, transformOrigin: "center", display: "flex" }}>
+          <span style={{ transform: `scale(${scale})`, transformOrigin: "center", display: "flex" }}>
             <JiraServiceManagementIcon appearance="brand" size="small" />
           </span>
         </span>
@@ -57,7 +57,7 @@ export const ProductLogo = ({ product, className = "", size = 16 }: Props) => {
     case "loom":
       return (
         <span className={`inline-flex items-center justify-center overflow-hidden shrink-0 ${className}`} style={{ width: size, height: size }}>
-          <span style={{ transform: `scale(${size / 32})`, transformOrigin: "center", display: "flex" }}>
+          <span style={{ transform: `scale(${scale})`, transformOrigin: "center", display: "flex" }}>
             <LoomIcon appearance="brand" size="small" />
           </span>
         </span>

@@ -1,77 +1,38 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  MessageSquare,
-  FileText,
-  CheckCircle2,
-  AlertCircle,
-  Calendar,
-  Pin,
-  Radio,
-} from "lucide-react";
+import { Radio } from "lucide-react";
 import type { Account } from "@/data/accounts";
 import { MOCK_ACTIVITIES, type ActivityItem } from "@/data/mockActivity";
+import { ProductLogo } from "@/components/ProductLogo";
 
-const iconMap: Record<string, typeof MessageSquare> = {
-  confluence: FileText,
-  jira: CheckCircle2,
-  meeting: Calendar,
-  slack: Pin,
-  support: AlertCircle,
+type ProductType = "jira" | "confluence" | "slack" | "loom" | "jsm";
+
+const productMap: Record<string, ProductType> = {
+  jira: "jira",
+  confluence: "confluence",
+  slack: "slack",
+  loom: "loom",
+  support: "jsm",
+  meeting: "confluence", // calendar events come from Confluence pages
 };
 
-const colorMap: Record<string, string> = {
-  confluence: "text-primary",
-  jira: "text-hub-success",
-  meeting: "text-hub-info",
-  slack: "text-hub-warning",
-  support: "text-destructive",
+const bgMap: Record<string, string> = {
+  jira:       "bg-blue-50 dark:bg-blue-950/30",
+  confluence: "bg-blue-50 dark:bg-blue-950/30",
+  slack:      "bg-purple-50 dark:bg-purple-950/30",
+  loom:       "bg-violet-50 dark:bg-violet-950/30",
+  support:    "bg-blue-50 dark:bg-blue-950/30",
+  meeting:    "bg-blue-50 dark:bg-blue-950/30",
 };
 
 /* ── Simulated live events that trickle in ─────────────── */
 const LIVE_EVENTS: ActivityItem[] = [
-  {
-    type: "jira",
-    title: "HUB-3 moved to In Progress",
-    time: "Just now",
-    icon: "🔄",
-    user: "Sarah Chen",
-  },
-  {
-    type: "slack",
-    title: "New message in #acme-strategy: 'Customer confirmed onsite date'",
-    time: "Just now",
-    icon: "💬",
-    user: "Mike Johnson",
-  },
-  {
-    type: "confluence",
-    title: "Renewal strategy doc updated with latest pricing",
-    time: "Just now",
-    icon: "📝",
-    user: "Sarah Chen",
-  },
-  {
-    type: "jira",
-    title: "HUB-12 priority changed to Highest",
-    time: "Just now",
-    icon: "🔺",
-    user: "Alex Rodriguez",
-  },
-  {
-    type: "support",
-    title: "New support ticket: SSO configuration assistance",
-    time: "Just now",
-    icon: "🎫",
-    user: "Support Team",
-  },
-  {
-    type: "meeting",
-    title: "Meeting notes added: Technical Architecture Discussion",
-    time: "Just now",
-    icon: "📋",
-    user: "Alex Rodriguez",
-  },
+  { type: "jira",       title: "HUB-3 moved to In Progress — Q2 Renewal Prep",              time: "Just now", icon: "", user: "Sarah Chen",    url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-3" },
+  { type: "slack",      title: "Pinned: 'Customer confirmed onsite date — April 23rd'",      time: "Just now", icon: "", user: "Mike Johnson",   url: "" },
+  { type: "confluence", title: "Renewal strategy doc updated with latest pricing details",   time: "Just now", icon: "", user: "Sarah Chen",    url: "https://one-atlas-fnjq.atlassian.net/wiki" },
+  { type: "loom",       title: "Account Health Check — Weekly Walkthrough Recording",        time: "Just now", icon: "", user: "Alex Rodriguez", url: "https://www.loom.com/share/demo-live" },
+  { type: "support",    title: "JSM: New ticket — SSO SAML configuration assistance",       time: "Just now", icon: "", user: "Support Team",   url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-99" },
+  { type: "jira",       title: "HUB-12 priority escalated to Highest by account team",      time: "Just now", icon: "", user: "Alex Rodriguez", url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-12" },
 ];
 
 interface Props {
@@ -134,9 +95,13 @@ const ActivityFeed = ({ account }: Props) => {
       <div className="space-y-3 max-h-[400px] overflow-y-auto">
         <AnimatePresence initial={false}>
           {allActivities.map((a, i) => {
-            const Icon = iconMap[a.type] ?? MessageSquare;
-            const color = colorMap[a.type] ?? "text-muted-foreground";
+            const product = productMap[a.type] ?? "jira";
+            const bg = bgMap[a.type] ?? "bg-muted";
             const isNew = i < liveItems.length;
+            const Wrapper = a.url ? "a" : "div";
+            const wrapperProps = a.url
+              ? { href: a.url, target: "_blank", rel: "noopener noreferrer" }
+              : {};
             return (
               <motion.div
                 key={`${a.title}-${i}`}
@@ -157,13 +122,12 @@ const ActivityFeed = ({ account }: Props) => {
                     className="absolute -left-1 top-0 bottom-0 w-0.5 rounded-full bg-hub-success"
                   />
                 )}
-                <div className={`mt-0.5 p-1.5 rounded ${color} bg-muted`}>
-                  <Icon className="w-3.5 h-3.5" />
+                <div className={`mt-0.5 p-1.5 rounded ${bg} shrink-0`}>
+                  <ProductLogo product={product} size={14} />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm text-foreground">
-                    <span className="font-medium">{a.icon} </span>
-                    <span className="text-muted-foreground">{a.title}</span>
+                <Wrapper {...wrapperProps} className="flex-1 min-w-0 group">
+                  <p className={`text-sm text-muted-foreground leading-snug ${a.url ? "group-hover:text-primary transition-colors" : ""}`}>
+                    {a.title}
                   </p>
                   <div className="flex items-center gap-2 mt-0.5">
                     {a.user && (
@@ -185,7 +149,7 @@ const ActivityFeed = ({ account }: Props) => {
                       </motion.span>
                     )}
                   </div>
-                </div>
+                </Wrapper>
               </motion.div>
             );
           })}

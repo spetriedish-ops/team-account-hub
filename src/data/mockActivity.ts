@@ -1,50 +1,57 @@
 export interface ActivityItem {
-  type: "confluence" | "jira" | "meeting" | "slack" | "support";
+  type: "confluence" | "jira" | "meeting" | "slack" | "support" | "loom";
   title: string;
   time: string;
   icon: string;
   user?: string;
+  url?: string;
 }
 
 export const MOCK_ACTIVITIES: Record<string, ActivityItem[]> = {
   "account:acme-corp": [
-    { type: "jira", title: "P1 Issue Escalated — Database Connection Timeout", time: "2 hours ago", icon: "🔴", user: "Alex Rodriguez" },
-    { type: "confluence", title: "Implementation Guide Updated", time: "4 hours ago", icon: "📄", user: "Sarah Chen" },
-    { type: "meeting", title: "Executive Steering Committee Scheduled", time: "1 day ago", icon: "📅", user: "Mike Johnson" },
-    { type: "slack", title: "Pinned key architecture decision doc in #acme-strategy", time: "2 days ago", icon: "📌", user: "Alex Rodriguez" },
-    { type: "jira", title: "5 tasks moved to In Progress", time: "3 days ago", icon: "🔄", user: "Sarah Chen" },
-    { type: "support", title: "API rate limiting ticket opened", time: "3 days ago", icon: "🎫", user: "Support Team" },
+    { type: "jira",       title: "P1: SSO login failure affecting 200+ users",                    time: "1 hour ago",   icon: "", user: "Alex Rodriguez",   url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-42" },
+    { type: "loom",       title: "Acme Corp — Executive Onsite Recap & Next Steps",               time: "3 hours ago",  icon: "", user: "Sarah Chen",        url: "https://www.loom.com/share/demo-acme-onsite" },
+    { type: "confluence", title: "Acme Implementation Runbook v2.1 — Published",                  time: "5 hours ago",  icon: "", user: "Sarah Chen",        url: "https://one-atlas-fnjq.atlassian.net/wiki" },
+    { type: "slack",      title: "Pinned: 'Final exec deck ready for review by EOD Thursday'",    time: "1 day ago",    icon: "", user: "Mike Johnson",      url: "" },
+    { type: "support",    title: "JSM ticket: API rate limiting impacting bulk imports",           time: "2 days ago",   icon: "", user: "Support Team",      url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-38" },
+    { type: "jira",       title: "5 tasks moved to In Progress in Q2 Delivery Board",             time: "3 days ago",   icon: "", user: "Sarah Chen",        url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-35" },
   ],
   "account:globex": [
-    { type: "confluence", title: "APAC Deployment Architecture Doc Published", time: "1 hour ago", icon: "📄", user: "Emma Wilson" },
-    { type: "meeting", title: "QBR Prep Sync Completed", time: "3 hours ago", icon: "📅", user: "Jessica Liu" },
-    { type: "jira", title: "Advanced analytics demo — marked Done", time: "1 day ago", icon: "✅", user: "David Park" },
-    { type: "slack", title: "Customer shared positive NPS feedback", time: "2 days ago", icon: "🎉", user: "David Park" },
+    { type: "confluence", title: "APAC Multi-Region Deployment Architecture — Published",         time: "1 hour ago",   icon: "", user: "Emma Wilson",       url: "https://one-atlas-fnjq.atlassian.net/wiki" },
+    { type: "loom",       title: "Globex QBR Prep — Walkthrough of Analytics Roadmap",            time: "4 hours ago",  icon: "", user: "Jessica Liu",       url: "https://www.loom.com/share/demo-globex-qbr" },
+    { type: "jira",       title: "Advanced analytics dashboard demo — marked Done",               time: "1 day ago",    icon: "", user: "David Park",        url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-29" },
+    { type: "slack",      title: "Pinned: 'APAC expansion approved by customer board 🎉'",        time: "2 days ago",   icon: "", user: "David Park",        url: "" },
+    { type: "support",    title: "JSM: Data residency query from customer legal team",            time: "3 days ago",   icon: "", user: "Support Team",      url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-27" },
   ],
   "account:initech": [
-    { type: "jira", title: "Legacy system integration scoping started", time: "5 hours ago", icon: "🔧", user: "Tom Brady" },
-    { type: "support", title: "Data export compliance request opened", time: "1 day ago", icon: "🎫", user: "Lisa Martinez" },
-    { type: "confluence", title: "Integration requirements doc drafted", time: "2 days ago", icon: "📄", user: "Tom Brady" },
+    { type: "jira",       title: "Legacy ERP integration scoping — In Progress",                  time: "5 hours ago",  icon: "", user: "Tom Brady",         url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-55" },
+    { type: "loom",       title: "Initech Integration Architecture — Technical Walkthrough",       time: "1 day ago",    icon: "", user: "Tom Brady",         url: "https://www.loom.com/share/demo-initech-arch" },
+    { type: "support",    title: "JSM: Data export compliance request — GDPR Article 20",        time: "1 day ago",    icon: "", user: "Support Team",      url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-52" },
+    { type: "confluence", title: "Integration requirements & API mapping doc — Drafted",          time: "2 days ago",   icon: "", user: "Lisa Martinez",     url: "https://one-atlas-fnjq.atlassian.net/wiki" },
+    { type: "slack",      title: "Pinned: 'Legacy API docs received — starting scoping'",        time: "3 days ago",   icon: "", user: "Tom Brady",         url: "" },
   ],
   "account:umbrella-corp": [
-    { type: "jira", title: "CRITICAL: Data migration failure — rollback initiated", time: "1 hour ago", icon: "🔴", user: "Christopher Lee" },
-    { type: "jira", title: "Security audit findings escalated to leadership", time: "3 hours ago", icon: "🔴", user: "Patricia Evans" },
-    { type: "support", title: "SLA breach reported — 4 tickets exceeded response time", time: "6 hours ago", icon: "⚠️", user: "Support Team" },
-    { type: "meeting", title: "Emergency account review scheduled", time: "1 day ago", icon: "📅", user: "Robert Zhang" },
-    { type: "slack", title: "Customer CTO expressed frustration in exec channel", time: "1 day ago", icon: "😟", user: "Robert Zhang" },
-    { type: "jira", title: "Training program — no DRI assigned yet", time: "2 days ago", icon: "🔄", user: "Patricia Evans" },
-    { type: "confluence", title: "Incident postmortem template created", time: "3 days ago", icon: "📄", user: "Christopher Lee" },
+    { type: "jira",       title: "CRITICAL: Data migration failure — rollback in progress",       time: "45 min ago",   icon: "", user: "Christopher Lee",   url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-71" },
+    { type: "support",    title: "JSM: SLA breach — 4 tickets exceeded response SLA",            time: "2 hours ago",  icon: "", user: "Support Team",      url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-70" },
+    { type: "loom",       title: "Umbrella Corp — Incident Review & Remediation Plan",            time: "4 hours ago",  icon: "", user: "Robert Zhang",      url: "https://www.loom.com/share/demo-umbrella-incident" },
+    { type: "jira",       title: "Security audit findings escalated to VP Engineering",           time: "6 hours ago",  icon: "", user: "Patricia Evans",    url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-68" },
+    { type: "slack",      title: "Pinned: '⚠️ CTO escalated to our VP — all hands needed'",     time: "1 day ago",    icon: "", user: "Robert Zhang",      url: "" },
+    { type: "confluence", title: "Incident postmortem template — In Review",                     time: "2 days ago",   icon: "", user: "Christopher Lee",   url: "https://one-atlas-fnjq.atlassian.net/wiki" },
   ],
   "account:wayne": [
-    { type: "jira", title: "Custom dashboard templates — scoping in progress", time: "4 hours ago", icon: "🔧", user: "Bruce Wayne" },
-    { type: "meeting", title: "Bi-weekly sync completed", time: "1 day ago", icon: "📅", user: "Alfred Pennyworth" },
-    { type: "confluence", title: "Reporting requirements captured", time: "3 days ago", icon: "📄", user: "Alfred Pennyworth" },
+    { type: "loom",       title: "Wayne Enterprises — Dashboard Mockup Walkthrough",              time: "2 hours ago",  icon: "", user: "Alfred Pennyworth", url: "https://www.loom.com/share/demo-wayne-dashboard" },
+    { type: "jira",       title: "Custom executive dashboard templates — scoping kicked off",      time: "4 hours ago",  icon: "", user: "Bruce Wayne",       url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-61" },
+    { type: "slack",      title: "Pinned: 'Dashboard mockups approved by customer VP ✅'",        time: "1 day ago",    icon: "", user: "Alfred Pennyworth", url: "" },
+    { type: "confluence", title: "Reporting & Analytics requirements — Captured",                 time: "2 days ago",   icon: "", user: "Alfred Pennyworth", url: "https://one-atlas-fnjq.atlassian.net/wiki" },
+    { type: "support",    title: "JSM: SSO SAML configuration assistance requested",              time: "3 days ago",   icon: "", user: "Support Team",      url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-58" },
   ],
   "account:stark": [
-    { type: "jira", title: "AI integration roadmap — phase 1 completed ✅", time: "2 hours ago", icon: "✅", user: "James Rhodes" },
-    { type: "confluence", title: "Multi-region compliance doc in review", time: "1 day ago", icon: "📄", user: "James Rhodes" },
-    { type: "meeting", title: "Innovation workshop scheduled for next week", time: "1 day ago", icon: "📅", user: "Tony Stark" },
-    { type: "slack", title: "Customer shared Rovo success story internally", time: "3 days ago", icon: "🎉", user: "Pepper Potts" },
+    { type: "jira",       title: "AI + Rovo integration — Phase 1 shipped ✅",                   time: "2 hours ago",  icon: "", user: "James Rhodes",      url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-81" },
+    { type: "loom",       title: "Stark Industries — Rovo AI Demo for Executive Sponsors",        time: "5 hours ago",  icon: "", user: "Tony Stark",        url: "https://www.loom.com/share/demo-stark-rovo" },
+    { type: "confluence", title: "Multi-region compliance & data residency — In Review",          time: "1 day ago",    icon: "", user: "James Rhodes",      url: "https://one-atlas-fnjq.atlassian.net/wiki" },
+    { type: "slack",      title: "Pinned: 'Phase 1 AI demo was a hit — accelerating Phase 2'",  time: "1 day ago",    icon: "", user: "Pepper Potts",      url: "" },
+    { type: "jira",       title: "EU AI Act compliance checklist — 3 items flagged",              time: "2 days ago",   icon: "", user: "James Rhodes",      url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-79" },
+    { type: "support",    title: "JSM: Rovo agent permissions scoping for enterprise tier",       time: "3 days ago",   icon: "", user: "Support Team",      url: "https://one-atlas-fnjq.atlassian.net/browse/HUB-77" },
   ],
 };
 
